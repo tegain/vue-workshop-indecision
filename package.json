@@ -34,7 +34,17 @@
       "plugin:vue/essential",
       "@vue/prettier"
     ],
-    "rules": {},
+    "rules": {
+      "no-console": ["warn"],
+      "prettier/prettier": [
+        "warn",
+        {
+          "singleQuote": true,
+          "semi": true,
+          "trailingComma": "none"
+        }
+      ]
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }

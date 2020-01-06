@@ -1,28 +1,79 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <app-header
+      title="Indecision"
+      subtitle="Put your life in the hands of the computer"
+    />
+
+    <div class="container">
+      <app-action :has-options="options.length > 0" @pick-option="handlePick" />
+
+      <app-selected-option :option="selectedOption" />
+
+      <app-options-list
+        :options="options"
+        @delete-option="handleDeleteOption"
+        @delete-options="handleDeleteOptions"
+      />
+
+      <app-add-option :error="error" @add-option="handleAddOption" />
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import AppHeader from './components/app-header';
+import AppAddOption from './components/app-add-option';
+import AppOptionsList from './components/app-options-list';
+import AppSelectedOption from './components/app-selected-option';
+import AppAction from './components/app-action';
 
 export default {
-  name: "app",
+  name: 'App',
+
   components: {
-    HelloWorld
+    AppHeader,
+    AppAddOption,
+    AppOptionsList,
+    AppAction,
+    AppSelectedOption
+  },
+
+  data() {
+    return {
+      options: [],
+      selectedOption: null,
+      error: null
+    };
+  },
+
+  methods: {
+    handleAddOption(option) {
+      if (!option) {
+        this.error = 'Entrer une option valide';
+        return;
+      }
+
+      if (this.options.includes(option)) {
+        this.error = 'Cette option existe déjà !';
+        return;
+      }
+
+      this.options.push(option);
+    },
+
+    handleDeleteOption(option) {
+      this.options = this.options.filter(opt => opt !== option);
+    },
+
+    handlePick() {
+      const randomNum = Math.floor(Math.random() * this.options.length);
+      this.selectedOption = this.options[randomNum];
+    },
+
+    handleDeleteOptions() {
+      this.options = [];
+    }
   }
 };
 </script>
-
-<style lang="scss">
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
