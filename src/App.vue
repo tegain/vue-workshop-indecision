@@ -8,7 +8,7 @@
     <div class="container">
       <app-action :has-options="options.length > 0" @pick-option="handlePick" />
 
-      <app-selected-option :option="selectedOption" />
+      <app-selected-option :option="selectedOption" @clear-option="clearSelectedOption" />
 
       <app-options-list
         :options="options"
@@ -97,6 +97,11 @@ export default {
 
     handleDeleteOptions() {
       this.options = [];
+      this.clearSelectedOption();
+    },
+
+    clearSelectedOption() {
+      this.selectedOption = null;
     }
   }
 };
