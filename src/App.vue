@@ -47,6 +47,30 @@ export default {
     };
   },
 
+  watch: {
+    options(value) {
+      const options = JSON.stringify(value);
+      localStorage.setItem('options', options);
+    }
+  },
+
+  mounted() {
+    try {
+      const json = localStorage.getItem('options');
+      const options = JSON.parse(json);
+
+      if (options) {
+        this.options = options;
+      }
+    } catch (e) {
+      console.log(`
+        Erreur lors de la récupération des options: ${e.message}
+        Suppression du storage...
+      `);
+      localStorage.removeItem('options');
+    }
+  },
+
   methods: {
     handleAddOption(option) {
       if (!option) {
