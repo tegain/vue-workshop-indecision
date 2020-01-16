@@ -8,7 +8,10 @@
     <div class="container">
       <app-action :has-options="options.length > 0" @pick-option="handlePick" />
 
-      <app-selected-option :option="selectedOption" @clear-option="clearSelectedOption" />
+      <app-selected-option
+        :option="selectedOption"
+        @clear-option="clearSelectedOption"
+      />
 
       <app-options-list
         :options="options"
@@ -49,6 +52,10 @@ export default {
 
   watch: {
     options(value) {
+      if (value.length === 0) {
+        localStorage.removeItem('options');
+        return;
+      }
       const options = JSON.stringify(value);
       localStorage.setItem('options', options);
     }
